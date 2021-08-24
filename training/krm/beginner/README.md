@@ -167,7 +167,7 @@ kubectl describe PubSubTopic/training-topic -n config-control
 
 Look at other [Config Connector resources](https://cloud.google.com/config-connector/docs/reference/overview) you can create
 
-# 5 Create some GCP resources via using KRM style yaml config
+# 5 Create a GCP VPC using a KRM blueprint
 
 **Let's deploy a simple KRM style blueprint**
 
@@ -184,10 +184,6 @@ cd "./vpc/"
 ```
 
 Edit the setters.yaml file
-
-```
-
-```
 
 Execute the function pipeline
 
