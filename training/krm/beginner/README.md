@@ -142,6 +142,8 @@ Clone the training repo locally to get the example yaml files:
 
 ```
 git clone -b krm-training-202108 https://github.com/kaariger/blueprints.git
+
+cd blueprints/training/krm/beginner/
 ```
 
 
