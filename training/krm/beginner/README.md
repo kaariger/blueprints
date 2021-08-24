@@ -25,8 +25,7 @@ Go to [Google Cloud SDK](https://cloud.google.com/sdk/docs/downloads-interactive
 
 **01 - Environment Variables**
 * Replace **YOUR_PROJECT_ID** with the [GCP Project ID](https://cloud.google.com/resource-manager/docs/creating-managing-projects#before_you_begin) you are using for the training
-
-Optionally change the name of the Config Controller cluster that you will be creating.
+* Optionally change the name of the Config Controller cluster that you will be creating.
 
 ```
 export PROJECT_ID=YOUR_PROJECT_ID
