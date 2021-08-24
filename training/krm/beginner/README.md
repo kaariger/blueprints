@@ -183,7 +183,19 @@ Move into the local package directory:
 cd "./vpc/"
 ```
 
-Edit the setters.yaml file
+Edit the setters.yaml file and pick the values for the data fields. Use your $PROJECT_ID.
+
+```
+apiVersion: v1
+kind: ConfigMap
+metadata: # kpt-merge: /setters
+  name: setters
+data:
+  namespace: config-control
+  network-name: krm-test-vpc
+  project-id: <your project id>
+```
+
 
 Execute the function pipeline
 
