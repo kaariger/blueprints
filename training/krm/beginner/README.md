@@ -1,4 +1,4 @@
-# KRM Blueprints Lab - 00-Setup
+# KRM Blueprints Lab
 
 ## 0. Prerequisite
 
@@ -141,7 +141,7 @@ gcloud projects add-iam-policy-binding "${PROJECT_ID}" \
 Clone the training repo locally to get the example yaml files:
 
 ```
-git clone https://github.com/kaariger/blueprints.git/training/krm@$main
+git clone -b krm-training-202108 https://github.com/kaariger/blueprints.git
 ```
 
 
