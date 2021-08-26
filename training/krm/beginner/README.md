@@ -1,6 +1,6 @@
 # KRM Blueprints Lab
 
-## 0. Prerequisite
+## 0. Prerequisites
 
 * A [GCP Project](https://cloud.google.com/resource-manager/docs/creating-managing-projects#creating_a_project) linked with a valid biiling account
 * [Project Owner](https://cloud.google.com/iam/docs/understanding-roles#basic-definitions) (**roles/owner**) for your GCP project
