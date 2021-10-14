@@ -108,7 +108,7 @@ gcloud alpha anthos config controller list --location=us-central1
 
 Make sure the newly created controller is listed.
 
-**05 - Make sure the Confing Controller cluster is healthy and `kubectl` and 'kpt' can connect with it**
+**05 - Make sure the Confing Controller cluster is healthy and `kubectl` and `kpt` can connect with it**
 
 Run the following command to verify that `kubectl` can connect to it and that the controller is healthy:
 
