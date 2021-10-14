@@ -35,7 +35,7 @@ export CC_NAME=cc-training
 **02 - Verify the environment variables are set**
 ```
 echo "Project: ${PROJECT_ID}"
-echo "Config Controller Name: ${CC_NAME}""
+echo "Config Controller Name: ${CC_NAME}"
 ```
 
 **03 - Setup & Verify [gcloud configurations](https://cloud.google.com/sdk/gcloud/reference/config) for the training**
