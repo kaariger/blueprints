@@ -28,8 +28,8 @@ Go to [Google Cloud SDK](https://cloud.google.com/sdk/docs/downloads-interactive
 * Optionally change the name of the Config Controller cluster that you will be creating.
 
 ```
-export PROJECT_ID=YOUR_PROJECT_ID
 export CC_NAME=cc-training
+export PROJECT_ID=YOUR_PROJECT_ID
 ```
 
 **02 - Verify the environment variables are set**
@@ -96,7 +96,7 @@ gcloud alpha anthos config controller create ${CC_NAME} \
     --location=us-central1
 ```
 
-Plese note that this step can take 15-25 minutes.
+Plese note that this step can take 15-20 minutes.
 
 **04 - Verify Config Controller installation**
 
@@ -108,16 +108,7 @@ gcloud alpha anthos config controller list --location=us-central1
 
 Make sure the newly created controller is listed.
 
-**05 - Fetch the credentials for Config Controller so `kubectl` and `kpt` can connect to it**
-
-Get the credentials for the Config Controller instance just created:
-
-```
-gcloud alpha anthos config controller get-credentials ${CC_NAME} \
-    --location us-central1
-```
-
-This allows `kubectl` and `kpt` cli tools to connect to the Config Controller.
+**05 - Make sure the Confing Controller cluster is healthy and `kubectl` and 'kpt' can connect with it**
 
 Run the following command to verify that `kubectl` can connect to it and that the controller is healthy:
 
@@ -125,6 +116,15 @@ Run the following command to verify that `kubectl` can connect to it and that th
 kubectl get ConfigConnectorContext -n config-control \
   -o "custom-columns=NAMESPACE:.metadata.namespace,NAME:.metadata.name,HEALTHY:.status.healthy"
 ```
+
+If the above command fails only then manually try to get the credentials for the Config Controller instance just created:
+
+```
+gcloud alpha anthos config controller get-credentials ${CC_NAME} \
+    --location us-central1
+```
+
+This should allow `kubectl` and `kpt` cli tools to connect to the Config Controller.
 
 **06 - Grant permission to Config Controller to create resources in your project**
 
