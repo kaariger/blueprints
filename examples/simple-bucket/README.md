@@ -1,20 +1,15 @@
-# GKE Subnet blueprint
+# Google Cloud Storage Bucket blueprint
 
-A GCP subnet for a GKE cluster with private nodes
+A Google Cloud Storage bucket
 
 ## Setters
 
 ```
-Setter                Usages
-cluster-name          3
-location              2
-networking-namespace  2
-network-name          2
-network-project-id    3
-node-ip-range         2
-platform-project-id   3
-pod-ip-range          2
-service-ip-range      2
+Setter         Usages
+name           1
+namespace      1
+project-id     2
+storage-class  1
 ```
 
 ## Sub-packages
@@ -24,26 +19,26 @@ This package has no sub-packages.
 ## Resources
 
 ```
-File         APIVersion                             Kind               Name                                  Namespace
-subnet.yaml  compute.cnrm.cloud.google.com/v1beta1  ComputeSubnetwork  platform-project-id-example-us-east4  networking
+File         APIVersion                             Kind           Name                       Namespace
+bucket.yaml  storage.cnrm.cloud.google.com/v1beta1  StorageBucket  blueprints-project-bucket  config-control
 ```
 
 ## Resource References
 
-- [ComputeSubnetwork](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computesubnetwork)
+- [StorageBucket](https://cloud.google.com/config-connector/docs/reference/resource-docs/storage/storagebucket)
 
 ## Usage
 
 1.  Clone the package:
     ```
-    kpt pkg get https://github.com/GoogleCloudPlatform/blueprints.git/catalog/gke/subnet@${VERSION}
+    kpt pkg get https://github.com/GoogleCloudPlatform/blueprints.git/catalog/bucket@${VERSION}
     ```
     Replace `${VERSION}` with the desired repo branch or tag
     (for example, `main`).
 
 1.  Move into the local package:
     ```
-    cd "./subnet/"
+    cd "./bucket/"
     ```
 
 1.  Edit the function config file(s):

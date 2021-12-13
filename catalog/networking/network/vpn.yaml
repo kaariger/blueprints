@@ -11,7 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeVPNGateway
 metadata:
@@ -19,7 +18,7 @@ metadata:
   namespace: networking # kpt-set: ${namespace}
   annotations:
     cnrm.cloud.google.com/project-id: project-id # kpt-set: ${project-id}
-    cnrm.cloud.google.com/blueprint: cnrm/landing-zone:networking/v0.3.0
+    cnrm.cloud.google.com/blueprint: cnrm/landing-zone:networking/v0.4.0
 spec:
   description: "Compute HA VPN Gateway"
   networkRef:
@@ -33,7 +32,7 @@ metadata:
   namespace: networking # kpt-set: ${namespace}
   annotations:
     cnrm.cloud.google.com/project-id: project-id # kpt-set: ${project-id}
-    cnrm.cloud.google.com/blueprint: cnrm/landing-zone:networking/v0.3.0
+    cnrm.cloud.google.com/blueprint: cnrm/landing-zone:networking/v0.4.0
 spec:
   redundancyType: "TWO_IPS_REDUNDANCY"
   interface:
@@ -49,7 +48,7 @@ metadata:
   namespace: networking # kpt-set: ${namespace}
   annotations:
     cnrm.cloud.google.com/project-id: project-id # kpt-set: ${project-id}
-    cnrm.cloud.google.com/blueprint: cnrm/landing-zone:networking/v0.3.0
+    cnrm.cloud.google.com/blueprint: cnrm/landing-zone:networking/v0.4.0
 spec:
   peerExternalGatewayInterface: 0
   peerExternalGatewayRef:
@@ -73,7 +72,7 @@ metadata:
   namespace: networking # kpt-set: ${namespace}
   annotations:
     cnrm.cloud.google.com/project-id: project-id # kpt-set: ${project-id}
-    cnrm.cloud.google.com/blueprint: cnrm/landing-zone:networking/v0.3.0
+    cnrm.cloud.google.com/blueprint: cnrm/landing-zone:networking/v0.4.0
 spec:
   peerExternalGatewayInterface: 1
   peerExternalGatewayRef:

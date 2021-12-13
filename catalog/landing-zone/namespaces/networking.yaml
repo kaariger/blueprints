@@ -11,107 +11,96 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMServiceAccount
 metadata:
   name: networking-sa
   namespace: config-control # kpt-set: ${management-namespace}
   annotations:
-    cnrm.cloud.google.com/blueprint: cnrm/landing-zone/v0.3.0
+    cnrm.cloud.google.com/blueprint: cnrm/landing-zone/v0.4.0
     cnrm.cloud.google.com/project-id: management-project-id # kpt-set: ${management-project-id}
 spec:
   displayName: networking-sa
 ---
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
-kind: IAMPartialPolicy
+kind: IAMPolicyMember
 metadata:
   name: networking-sa-networkadmin-permissions
   namespace: config-control # kpt-set: ${management-namespace}
   annotations:
-    cnrm.cloud.google.com/blueprint: cnrm/landing-zone/v0.3.0
+    cnrm.cloud.google.com/blueprint: cnrm/landing-zone/v0.4.0
     cnrm.cloud.google.com/project-id: management-project-id # kpt-set: ${management-project-id}
 spec:
   resourceRef:
     apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
     kind: Organization
     external: "123456789012" # kpt-set: ${org-id}
-  bindings:
-    - role: roles/compute.networkAdmin
-      members:
-        - member: "serviceAccount:networking-sa@management-project-id.iam.gserviceaccount.com" # kpt-set: serviceAccount:networking-sa@${management-project-id}.iam.gserviceaccount.com
+  role: roles/compute.networkAdmin
+  member: "serviceAccount:networking-sa@management-project-id.iam.gserviceaccount.com" # kpt-set: serviceAccount:networking-sa@${management-project-id}.iam.gserviceaccount.com
 ---
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
-kind: IAMPartialPolicy
+kind: IAMPolicyMember
 metadata:
   name: networking-sa-security-permissions
   namespace: config-control # kpt-set: ${management-namespace}
   annotations:
-    cnrm.cloud.google.com/blueprint: cnrm/landing-zone/v0.3.0
+    cnrm.cloud.google.com/blueprint: cnrm/landing-zone/v0.4.0
     cnrm.cloud.google.com/project-id: management-project-id # kpt-set: ${management-project-id}
 spec:
   resourceRef:
     apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
     kind: Organization
     external: "123456789012" # kpt-set: ${org-id}
-  bindings:
-    - role: roles/compute.securityAdmin
-      members:
-        - member: "serviceAccount:networking-sa@management-project-id.iam.gserviceaccount.com" # kpt-set: serviceAccount:networking-sa@${management-project-id}.iam.gserviceaccount.com
+  role: roles/compute.securityAdmin
+  member: "serviceAccount:networking-sa@management-project-id.iam.gserviceaccount.com" # kpt-set: serviceAccount:networking-sa@${management-project-id}.iam.gserviceaccount.com
 ---
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
-kind: IAMPartialPolicy
+kind: IAMPolicyMember
 metadata:
   name: networking-sa-dns-permissions
   namespace: config-control # kpt-set: ${management-namespace}
   annotations:
-    cnrm.cloud.google.com/blueprint: cnrm/landing-zone/v0.3.0
+    cnrm.cloud.google.com/blueprint: cnrm/landing-zone/v0.4.0
     cnrm.cloud.google.com/project-id: management-project-id # kpt-set: ${management-project-id}
 spec:
   resourceRef:
     apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
     kind: Organization
     external: "123456789012" # kpt-set: ${org-id}
-  bindings:
-    - role: roles/dns.admin
-      members:
-        - member: "serviceAccount:networking-sa@management-project-id.iam.gserviceaccount.com" # kpt-set: serviceAccount:networking-sa@${management-project-id}.iam.gserviceaccount.com
+  role: roles/dns.admin
+  member: "serviceAccount:networking-sa@management-project-id.iam.gserviceaccount.com" # kpt-set: serviceAccount:networking-sa@${management-project-id}.iam.gserviceaccount.com
 ---
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
-kind: IAMPartialPolicy
+kind: IAMPolicyMember
 metadata:
   name: networking-sa-service-control-permissions
   namespace: config-control # kpt-set: ${management-namespace}
   annotations:
-    cnrm.cloud.google.com/blueprint: cnrm/landing-zone/v0.3.0
+    cnrm.cloud.google.com/blueprint: cnrm/landing-zone/v0.4.0
     cnrm.cloud.google.com/project-id: management-project-id # kpt-set: ${management-project-id}
 spec:
   resourceRef:
     apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
     kind: Organization
     external: "123456789012" # kpt-set: ${org-id}
-  bindings:
-    - role: roles/accesscontextmanager.policyAdmin
-      members:
-        - member: "serviceAccount:networking-sa@management-project-id.iam.gserviceaccount.com" # kpt-set: serviceAccount:networking-sa@${management-project-id}.iam.gserviceaccount.com
+  role: roles/accesscontextmanager.policyAdmin
+  member: "serviceAccount:networking-sa@management-project-id.iam.gserviceaccount.com" # kpt-set: serviceAccount:networking-sa@${management-project-id}.iam.gserviceaccount.com
 ---
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
-kind: IAMPartialPolicy
+kind: IAMPolicyMember
 metadata:
   name: networking-sa-xpnadmin-permissions
   namespace: config-control # kpt-set: ${management-namespace}
   annotations:
-    cnrm.cloud.google.com/blueprint: cnrm/landing-zone/v0.3.0
+    cnrm.cloud.google.com/blueprint: cnrm/landing-zone/v0.4.0
     cnrm.cloud.google.com/project-id: management-project-id # kpt-set: ${management-project-id}
 spec:
   resourceRef:
     apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
     kind: Organization
     external: "123456789012" # kpt-set: ${org-id}
-  bindings:
-    - role: roles/compute.xpnAdmin
-      members:
-        - member: "serviceAccount:networking-sa@management-project-id.iam.gserviceaccount.com" # kpt-set: serviceAccount:networking-sa@${management-project-id}.iam.gserviceaccount.com
+  role: roles/compute.xpnAdmin
+  member: "serviceAccount:networking-sa@management-project-id.iam.gserviceaccount.com" # kpt-set: serviceAccount:networking-sa@${management-project-id}.iam.gserviceaccount.com
 ---
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPartialPolicy
@@ -119,7 +108,7 @@ metadata:
   name: networking-sa-workload-identity-binding
   namespace: config-control # kpt-set: ${management-namespace}
   annotations:
-    cnrm.cloud.google.com/blueprint: cnrm/landing-zone/v0.3.0
+    cnrm.cloud.google.com/blueprint: cnrm/landing-zone/v0.4.0
     cnrm.cloud.google.com/project-id: management-project-id # kpt-set: ${management-project-id}
 spec:
   resourceRef:
@@ -129,7 +118,7 @@ spec:
   bindings:
     - role: roles/iam.workloadIdentityUser
       members:
-        - member:serviceAccount:management-project-id.svc.id.goog[cnrm-system/cnrm-controller-manager-networking] # kpt-set: serviceAccount:${management-project-id}.svc.id.goog[cnrm-system/cnrm-controller-manager-networking]
+        - member: serviceAccount:management-project-id.svc.id.goog[cnrm-system/cnrm-controller-manager-networking] # kpt-set: serviceAccount:${management-project-id}.svc.id.goog[cnrm-system/cnrm-controller-manager-networking]
 ---
 apiVersion: v1
 kind: Namespace
@@ -158,6 +147,6 @@ metadata:
   name: configconnectorcontext.core.cnrm.cloud.google.com
   namespace: networking
   annotations:
-    cnrm.cloud.google.com/blueprint: cnrm/landing-zone/v0.3.0
+    cnrm.cloud.google.com/blueprint: cnrm/landing-zone/v0.4.0
 spec:
   googleServiceAccount: networking-sa@management-project-id.iam.gserviceaccount.com # kpt-set: networking-sa@${management-project-id}.iam.gserviceaccount.com

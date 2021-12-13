@@ -11,107 +11,96 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMServiceAccount
 metadata:
   name: projects-sa
   namespace: config-control # kpt-set: ${management-namespace}
   annotations:
-    cnrm.cloud.google.com/blueprint: cnrm/landing-zone/v0.3.0
+    cnrm.cloud.google.com/blueprint: cnrm/landing-zone/v0.4.0
     cnrm.cloud.google.com/project-id: management-project-id # kpt-set: ${management-project-id}
 spec:
   displayName: projects-sa
 ---
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
-kind: IAMPartialPolicy
+kind: IAMPolicyMember
 metadata:
   name: projects-sa-projectcreator-permissions
   namespace: config-control # kpt-set: ${management-namespace}
   annotations:
-    cnrm.cloud.google.com/blueprint: cnrm/landing-zone/v0.3.0
+    cnrm.cloud.google.com/blueprint: cnrm/landing-zone/v0.4.0
     cnrm.cloud.google.com/project-id: management-project-id # kpt-set: ${management-project-id}
 spec:
   resourceRef:
     apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
     kind: Organization
     external: "123456789012" # kpt-set: ${org-id}
-  bindings:
-    - role: roles/resourcemanager.projectCreator
-      members:
-        - member:  "serviceAccount:projects-sa@management-project-id.iam.gserviceaccount.com" # kpt-set: serviceAccount:projects-sa@${management-project-id}.iam.gserviceaccount.com
+  role: roles/resourcemanager.projectCreator
+  member: "serviceAccount:projects-sa@management-project-id.iam.gserviceaccount.com" # kpt-set: serviceAccount:projects-sa@${management-project-id}.iam.gserviceaccount.com
 ---
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
-kind: IAMPartialPolicy
+kind: IAMPolicyMember
 metadata:
   name: projects-sa-projectmover-permissions
   namespace: config-control # kpt-set: ${management-namespace}
   annotations:
-    cnrm.cloud.google.com/blueprint: cnrm/landing-zone/v0.3.0
+    cnrm.cloud.google.com/blueprint: cnrm/landing-zone/v0.4.0
     cnrm.cloud.google.com/project-id: management-project-id # kpt-set: ${management-project-id}
 spec:
   resourceRef:
     apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
     kind: Organization
     external: "123456789012" # kpt-set: ${org-id}
-  bindings:
-    - role: roles/resourcemanager.projectMover
-      members:
-        - member: "serviceAccount:projects-sa@management-project-id.iam.gserviceaccount.com" # kpt-set: serviceAccount:projects-sa@${management-project-id}.iam.gserviceaccount.com
+  role: roles/resourcemanager.projectMover
+  member: "serviceAccount:projects-sa@management-project-id.iam.gserviceaccount.com" # kpt-set: serviceAccount:projects-sa@${management-project-id}.iam.gserviceaccount.com
 ---
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
-kind: IAMPartialPolicy
+kind: IAMPolicyMember
 metadata:
   name: projects-sa-projectdeleter-permissions
   namespace: config-control # kpt-set: ${management-namespace}
   annotations:
-    cnrm.cloud.google.com/blueprint: cnrm/landing-zone/v0.3.0
+    cnrm.cloud.google.com/blueprint: cnrm/landing-zone/v0.4.0
     cnrm.cloud.google.com/project-id: management-project-id # kpt-set: ${management-project-id}
 spec:
   resourceRef:
     apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
     kind: Organization
     external: "123456789012" # kpt-set: ${org-id}
-  bindings:
-    - role: roles/resourcemanager.projectDeleter
-      members:
-        - member: "serviceAccount:projects-sa@management-project-id.iam.gserviceaccount.com" # kpt-set: serviceAccount:projects-sa@${management-project-id}.iam.gserviceaccount.com
+  role: roles/resourcemanager.projectDeleter
+  member: "serviceAccount:projects-sa@management-project-id.iam.gserviceaccount.com" # kpt-set: serviceAccount:projects-sa@${management-project-id}.iam.gserviceaccount.com
 ---
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
-kind: IAMPartialPolicy
+kind: IAMPolicyMember
 metadata:
   name: projects-sa-billinguser-permissions
   namespace: config-control # kpt-set: ${management-namespace}
   annotations:
-    cnrm.cloud.google.com/blueprint: cnrm/landing-zone/v0.3.0
+    cnrm.cloud.google.com/blueprint: cnrm/landing-zone/v0.4.0
     cnrm.cloud.google.com/project-id: management-project-id # kpt-set: ${management-project-id}
 spec:
   resourceRef:
     apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
     kind: Organization
     external: "123456789012" # kpt-set: ${org-id}
-  bindings:
-    - role: roles/billing.user
-      members:
-        - member: "serviceAccount:projects-sa@management-project-id.iam.gserviceaccount.com" # kpt-set: serviceAccount:projects-sa@${management-project-id}.iam.gserviceaccount.com
+  role: roles/billing.user
+  member: "serviceAccount:projects-sa@management-project-id.iam.gserviceaccount.com" # kpt-set: serviceAccount:projects-sa@${management-project-id}.iam.gserviceaccount.com
 ---
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
-kind: IAMPartialPolicy
+kind: IAMPolicyMember
 metadata:
   name: projects-sa-serviceusageadmin-permissions
   namespace: config-control # kpt-set: ${management-namespace}
   annotations:
-    cnrm.cloud.google.com/blueprint: cnrm/landing-zone/v0.3.0
+    cnrm.cloud.google.com/blueprint: cnrm/landing-zone/v0.4.0
     cnrm.cloud.google.com/project-id: management-project-id # kpt-set: ${management-project-id}
 spec:
   resourceRef:
     apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
     kind: Organization
     external: "123456789012" # kpt-set: ${org-id}
-  bindings:
-    - role: roles/serviceusage.serviceUsageAdmin
-      members:
-        - member: "serviceAccount:projects-sa@management-project-id.iam.gserviceaccount.com" # kpt-set: serviceAccount:projects-sa@${management-project-id}.iam.gserviceaccount.com
+  role: roles/serviceusage.serviceUsageAdmin
+  member: "serviceAccount:projects-sa@management-project-id.iam.gserviceaccount.com" # kpt-set: serviceAccount:projects-sa@${management-project-id}.iam.gserviceaccount.com
 ---
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPartialPolicy
@@ -119,7 +108,7 @@ metadata:
   name: projects-sa-workload-identity-binding
   namespace: config-control # kpt-set: ${management-namespace}
   annotations:
-    cnrm.cloud.google.com/blueprint: cnrm/landing-zone/v0.3.0
+    cnrm.cloud.google.com/blueprint: cnrm/landing-zone/v0.4.0
     cnrm.cloud.google.com/project-id: management-project-id # kpt-set: ${management-project-id}
 spec:
   resourceRef:

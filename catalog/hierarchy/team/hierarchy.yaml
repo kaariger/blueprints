@@ -11,15 +11,14 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 apiVersion: blueprints.cloud.google.com/v1alpha3
 kind: ResourceHierarchy
 metadata:
   name: root-hierarchy
   namespace: hierarchy # kpt-set: ${namespace}
   annotations:
-    config.kubernetes.io/local-config: "true"
-    cnrm.cloud.google.com/blueprint: cnrm/landing-zone:hierarchy:team/v0.3.0
+    config.kubernetes.io/local-config: 'true'
+    cnrm.cloud.google.com/blueprint: 'cnrm/landing-zone:hierarchy:team/v0.3.0'
 spec:
   config:
     - retail:
@@ -28,7 +27,7 @@ spec:
         $subtree: environments
   parentRef:
     # This should match your organization ID
-    external: "123456789012"
+    external: '123456789012'
   subtrees:
     environments:
       - dev
