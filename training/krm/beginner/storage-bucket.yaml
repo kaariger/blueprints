@@ -6,7 +6,7 @@ metadata:
   namespace: config-control
   annotations:
     cnrm.cloud.google.com/force-destroy: "false"
-    cnrm.cloud.google.com/project-id: project-id
+    cnrm.cloud.google.com/project-id: <PROJECT_ID>
 spec:
   storageClass: standard
   uniformBucketLevelAccess: true
