@@ -7,11 +7,15 @@
 
 ## 1. What You'll Learn
 
-* [Google Cloud SDK](https://cloud.google.com/sdk/)
 * [Cloud Shell](https://cloud.google.com/shell/docs)
 * [Enable Google Cloud API](https://cloud.google.com/service-usage/docs/enable-disable)
 * [Config Controller](https://cloud.google.com/anthos-config-management/docs/concepts/config-controller-overview)
-* [KRM blueprints](https://github.com/GoogleCloudPlatform/blueprints/)
+* [Config Connector resources](https://cloud.google.com/config-connector/docs/reference/overview)
+* [Policy Controller and constraints](https://cloud.google.com/anthos-config-management/docs/concepts/policy-controller)
+
+In this lab you will learn how to can create GCP resources using Kubernetes Resource Management (KRM) style manifests that describe infrastructure resources. You will also learn about Config Controller and its components like Config Connector and Policy Controller.
+
+This lab is the first part of a series that provides an introduction to managing infrastructure using Kubernetes Resource Management (KRM) style blueprints. Please follow the labs in sequence as each lab builds on the concepts introduced in the previous labs.
 
 ## 2. Google Cloud SDK
 
@@ -144,7 +148,7 @@ gcloud projects add-iam-policy-binding "${PROJECT_ID}" \
     --project "${PROJECT_ID}"
 ```
 
-# 4 Create some GCP resources via Config Controller using KRM style yaml config
+## 4 Create some GCP resources via Config Controller using KRM style yaml config
 
 Clone the training repo locally to get the example yaml files:
 
@@ -154,15 +158,72 @@ git clone -b krm-training-202108 https://github.com/kaariger/blueprints.git
 cd blueprints/training/krm/beginner/
 ```
 
-First, let's create a storage bucket.
+First, let's create a PubSub topic.
 
-Take a look at the storage-bucket.yaml file:
+Take a look at the pub-sub-topic.yaml file:
+
+```
+cat pub-sub-topic.yaml
+```
+
+Let's send this config to Config Controller so it can create this GCP resource for us:
+
+```
+kubectl apply -f pub-sub-topic.yaml
+```
+
+You should see output similar to the following:
+
+```
+pubsubtopic.pubsub.cnrm.cloud.google.com/training-topic created
+```
+
+
+You can describe an object to get more details about it:
+
+```
+kubectl describe PubSubTopic/training-topic -n config-control
+```
+
+Note the Status and Events section in the resource. These two sections provide important information about the state of this resource. If there are any errors in creating this object, these sections will show the appropriate error messages.
+
+You can use the following `gcloud` command to get the list of topics:
+
+```
+gcloud pubsub topics list
+```
+
+You should see the topic you created above in the list.
+
+Please note the labels attached to this resource. It should include the following:
+
+```
+labels:
+  created-in: krm-training
+  managed-by-cnrm: 'true'
+```
+
+`managed-by-cnrm: 'true'` indicates that this resource is being managed by Config Connector.
+
+Now let's create a storage bucket.
+
+Take a look at the storage-bucket.yaml file in the same directory:
 
 ```
 cat storage-bucket.yaml
 ```
 
-Let's send this config to Config Controller so it can create this GCP resource for us:
+You will need to edit this file to give this bucket a unique name. You can simply add your project ID to the name and that should make it unique.
+
+Edit the file in an editor of your choice e.g.
+
+```
+nano storage-bucket.yaml
+```
+
+Please make sure to repace `<PROJECT_ID>` with your project ID.
+
+Once you have edited the file, send this config to Config Controller so it can create the storage bucket for us:
 
 ```
 kubectl apply -f storage-bucket.yaml
@@ -171,111 +232,71 @@ kubectl apply -f storage-bucket.yaml
 Let's look at this object in the cluster:
 
 ```
-kubectl get StorageBucket -n config-control
+kubectl describe StorageBucket/${PROJECT_ID}-krm-trainig-bucket -n config-control
 ```
 
 You can navigate to the Cloud Console to view this bucket in the UI as well.
 
-Next let's create another resource, a pub-sub topic.
-
-Take a look at the pub-sub-topic.yaml file:
-
-```
-cat pub-sub-topic.yaml
-```
-
-Again, create the resource in Config Controller cluster corresponding to the pub-sub topic:
-
-```
-kubectl apply -f pub-sub-topic.yaml
-```
-
-Again, let's look at this object in the cluster:
-
-```
-kubectl get PubSubTopic -n config-control
-```
-
-You can describe an object to get more details about it:
-
-```
-kubectl describe PubSubTopic/training-topic -n config-control
-```
-
 You can get a list of other [Config Connector resources](https://cloud.google.com/config-connector/docs/reference/overview) you can use to create the corresponding GCP resources.
 
-Clean-up
+Try to create some other resources by creating the yaml spec and then using `kubectl apply`.
 
-You can delete the GCP resources by deleting the corresponding resource objects in the Config Controller cluster:
+## 5 Working with Policy Controller and constraints
+
+Now let's look at how you can create some constraints to enforce organizational policies.
+
+In this example we will create a policy that only allows Storage Buckets to created in US-Central1 region and prevents users from creating these buckets in any other region.
+
+Look at the constraint definition in the `StorageConstraint.yaml` file:
+
+```
+cat StorageConstraint.yaml
+```
+
+Let's create this constraint in our cluster.
+
+```
+kubectl apply -f StorageConstraint.yaml
+```
+
+Now let's try to create a Storage Bucket in asia-southeast1 region.
+
+First edit the `storage-bucket-asia.yaml` file and replace <PROJECT_ID> with your project ID in the name field and the project-id annotation.
+
+```
+nano storage-bucket-asia.yaml
+```
+
+Now let's try to create this bucket by running the following command:
+
+```
+kubectl apply -f storage-bucket-asia.yaml
+```
+
+You will see output similar to the following:
+
+```
+Error from server ([us-central1-only] Cloud Storage bucket <${PROJECT_ID}-krm-trainig-bucket-asia> uses a disallowed location <asia-southeast1>, allowed locations are ["us-central1"]): error when creating "storage-bucket-asia.yaml": admission webhook "validation.gatekeeper.sh" denied the request: [us-central1-only] Cloud Storage bucket <${PROJECT_ID}-krm-trainig-bucket-asia> uses a disallowed location <asia-southeast1>, allowed locations are ["us-central1"]
+```
+
+This shows how the Policy Controller can catch requests sent to the Config Controller that violate some constraint and prevents that request from being completed.
+
+You can edit the location of the this bucket in the yaml file to us-central1 and see if you can successfully create the bucket.
+
+**Clean-up**
+
+You can delete the GCP resources created during the lab by deleting the corresponding resource objects in the Config Controller cluster:
 
 ```
 kubectl delete PubSubTopic/training-topic -n config-control
-kubectl delete StorageBucket/krm-trainig-bucket-01 -n config-control
+kubectl delete StorageBucket/${PROJECT_ID}-krm-trainig-bucket -n config-control
+kubectl delete StorageBucket/${PROJECT_ID}-krm-trainig-bucket-asia -n config-control
 ```
 
-# 5 Create a GCP VPC using a KRM blueprint
-
-Next let's see how you can create GCP resources using blueprints and Config Controller.
-
-**Let's deploy a simple KRM style blueprint**
-
-Clone the package:
+Alternatively, you can also delete these objects by referencing the files that describe these objects.
 
 ```
-kpt pkg get https://github.com/GoogleCloudPlatform/blueprints.git/catalog/networking/network/vpc@$main
-```
-
-Move into the local package directory:
-
-```
-cd "./vpc/"
-```
-
-Edit the setters.yaml file and pick the values for the data fields. Make sure you use your own $PROJECT_ID. Feel free to change the name of the VPC as well.
-
-```
-apiVersion: v1
-kind: ConfigMap
-metadata: # kpt-merge: /setters
-  name: setters
-data:
-  namespace: config-control
-  network-name: krm-test-vpc
-  project-id: <your project id>
-```
-
-To apply the blueprint we use the `kpt` tool and let it manipulate the configurations and send to the Config Controller.
-
-Here are the typical steps:
-
-1. Execute the function pipeline
-
-```
-kpt fn render
-```
-
-2. Initialize the resource inventory
-
-```
-kpt live init --namespace config-control
-```
-
-3. Apply the package resources to your cluster
-
-```
-kpt live apply
-```
-
-4. Wait for the resources to be ready
-
-```
-kpt live status --output table --poll-until current
-```
-
-Clean-up
-
-Once done you can clean up the GCP resources by using the following command to destroy the corresponding resources created in the Config Controller cluster.
-
-```
-kpt live destroy
+kubectl delete -f pub-sub-topic.yaml
+kubectl delete -f storage-bucket.yaml
+kubectl delete -f storage-bucket-asia.yaml
 ```
